@@ -1,0 +1,146 @@
+﻿@{
+	ViewData["Title"] = "Editoriales";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="icon" href="https://www.cmceledon.com/Recursos/assets/img/favicon/favicon.ico">
+	<title>@ViewData["Title"] - Million Editoriales</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+	<header>
+		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+			<div class="container">
+				<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Million Book</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+						aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+					<ul class="navbar-nav flex-grow-1">
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+	<div class="container">
+		<main role="main" class="pb-3">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">Crear Editorial</h5>
+							<div id="resultInsertEditorial"></div>
+							<form action="" autocomplete="off" method="post">
+								<div class="form-group">
+									<label for="">Nombre</label>
+									<input name="nombreParam" type="text" class="form-control" id="nombreEditorialParam" >
+								</div>
+								<div class="form-group">
+									<label for="">Sede</label>
+									<input type="text" class="form-control" id="sedeParam">
+								</div>
+								<button name="sedeParam" type="button" onclick="insertarEditorial()" class="btn btn-primary">Crear</button>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="card">
+						<div class="card-body" style="max-height: 400px; overflow: auto;">
+							<h5 class="card-title">Editoriales</h5>
+
+							<table class="table" id="tableEditorial">
+								<thead class="thead-dark">
+									<tr>
+										<th scope="col">#</th>
+										<th scope="col">Nombre</th>
+										<th scope="col">Sede</th>
+									</tr>
+								</thead>
+								<tbody id="carga-editoriales">
+								</tbody>
+							</table>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="clearfix">&nbsp;</div>
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">Crear Libro</h5>
+							<div id="resultInsertLibro"></div>
+							<form action="Libro/InsertarLibro" autocomplete="off" method="post">
+								<div class="form-group">
+									<label>Editorial</label>
+									<select name="idEditorialParam" id="idEditorialParam">
+									</select>
+
+								</div>
+								<div class="form-group">
+									<label>ISBM</label>
+									<input name="isbmParam" type="number" class="form-control" id="isbmParam">
+
+								</div>
+								<div class="form-group">
+									<label>Titulo</label>
+									<input type="text" name="tituloParam" class="form-control" id="tituloParam">
+								</div>
+								<div class="form-group">
+									<label>Sinopsis</label>
+									<input type="text" name="sinpsisParam" class="form-control" id="sinpsisParam">
+								</div>
+								<div class="form-group">
+									<label>N. Pag</label>
+									<input type="text" name="numeroPaginaParam" class="form-control" id="numeroPaginaParam">
+								</div>
+								<button type="submit" class="btn btn-primary">Crear</button>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">Editoriales, carga Dapper</h5>
+
+							<table class="table">
+								<thead class="thead-dark">
+									<tr>
+										<th scope="col">#</th>
+										<th scope="col">Nombre</th>
+										<th scope="col">Sede</th>
+									</tr>
+								</thead>
+								<tbody id="carga-editoriales-dapper">
+									
+								</tbody>
+							</table>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	<footer class="border-top footer text-muted">
+		<div class="container">
+			&copy; 2020 - Million.Book - <a href="http://www.cmceledon.com/">www.cmceledon.com</a>
+		</div>
+	</footer>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

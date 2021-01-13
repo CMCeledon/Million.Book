@@ -1,0 +1,259 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using XM.GAO.DataServices.Common;
+using XM.GAO.Interfaces.Common;
+using XM.GAO.Model.Entities;
+using System.DirectoryServices;
+using System.DirectoryServices.AccountManagement;
+using System.Collections;
+using System.Configuration;
+using System.Security.Claims;
+using Microsoft.Owin.Security;
+
+namespace XM.GAO.DataServices.Common
+{
+    public class UsuarioLDAPManager : GenericEntityManager, IUsuarioLDAPRepository
+    {
+<<<<<<< HEAD
+        private string miNombreUsuario;
+        private string miContrasena;
+        private string _dominio;
+=======
+        private string MiNombreUsuario;
+        private string MiContrasena;
+        private string dominio;
+>>>>>>> 4749948554c6d3bc8c311d743ebe8d0078228645
+        private UserPrincipal miUsuario = null;
+
+        IAuthenticationManager IUsuarioLDAPRepository.AuthenticationManager { get; set; }
+
+        public List<UsuarioLDAP> GetUsuarios(string dominio, string adminUser, string adminPwd)
+        {
+
+            byte[] bytes = Convert.FromBase64String(adminPwd);
+            string securepw = System.Text.Encoding.Unicode.GetString(bytes);
+
+            string domainPath = @"LDAP://" + dominio;
+            DirectoryEntry searchRoot = new DirectoryEntry(domainPath, adminUser, securepw);
+            DirectorySearcher search = new DirectorySearcher(searchRoot);
+
+            //search.Filter = "(&(objectclass=user)(OU=USUARIOS-MOVILES,OU=USUARIOS,OU=XM,OU=GRUPO-ISA,DC=ISAMDNT,DC=GRUPO-ISA,DC=com))";
+            search.PropertiesToLoad.Add("samaccountname");
+            search.PropertiesToLoad.Add("usergroup");
+            search.PropertiesToLoad.Add("displayname");
+            search.PropertiesToLoad.Add("Company");
+            SearchResult result;
+            SearchResultCollection resultCol = search.FindAll();
+            List<UsuarioLDAP> lstADUsers = new List<UsuarioLDAP>();
+            if (resultCol != null)
+            {
+                for (int counter = 0; counter < resultCol.Count; counter++)
+                {
+                    string userNameEmailString = string.Empty;
+                    result = resultCol[counter];
+                    if (result.Properties.Contains("samaccountname") &&
+                        result.Properties.Contains("displayname"))
+                    {
+                        UsuarioLDAP usuario = new UsuarioLDAP();
+                        usuario.NombreCompleto = (String)result.Properties["displayname"][0];
+                        usuario.NombreUsuario = (String)result.Properties["samaccountname"][0];
+                        lstADUsers.Add(usuario);
+                    }
+                }
+            }
+            return lstADUsers.OrderBy(x => x.NombreCompleto).ToList();
+        }
+
+        public string GetNombreCompletoByNomCorto(string name, string adminUser, string adminPwd)
+        {
+            string dominio = ConfigurationManager.AppSettings["dominio"];
+            var v = GetUsuarios(dominio, adminUser, adminPwd).Where(x => x.NombreUsuario == name).FirstOrDefault();
+            if (v != null && !String.IsNullOrEmpty(v.NombreUsuario))
+                return v.NombreCompleto;
+            else return "";
+        }
+
+        /// <summary>
+        /// Valida si un usuario se puede autenticar con credenciales al direcotrio activo
+        /// </summary>
+        /// <param name="dominio"></param>
+        /// <param name="username"></param>
+        /// <param name="pwd"></param>
+        /// <returns></returns>
+        public bool IsAuthenticated(string path, string dominio, string contenedor, string username, string pwd)
+        {
+<<<<<<< HEAD
+            miNombreUsuario = username;
+            miContrasena = pwd;
+            _dominio = dominio;
+=======
+            MiNombreUsuario = username;
+            MiContrasena = pwd;
+>>>>>>> 4749948554c6d3bc8c311d743ebe8d0078228645
+
+            string dominioYUsuario = dominio + @"\" + username;
+            DirectoryEntry entry = new DirectoryEntry(path, dominioYUsuario, pwd);
+
+            try
+            {
+                bool isAuthenticated = false;
+
+                PrincipalContext domainctx = new PrincipalContext(ContextType.Domain,
+                      dominio,
+                      contenedor,
+                      ContextOptions.SimpleBind,
+                      username,
+                      pwd);
+
+                miUsuario = UserPrincipal.FindByIdentity(domainctx, username);
+
+                if (miUsuario != null)
+                {
+                    isAuthenticated = domainctx.ValidateCredentials(username, pwd, ContextOptions.Negotiate);
+                }
+
+                return isAuthenticated;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error autenticando usuario. " + ex);
+            }
+        }
+
+
+        /// <summary>
+        /// retorna los grupos a los que pertenence un usuario en el DA
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="dominio"></param>
+        /// <returns></returns>
+        public string GetGroups(string username, string dominio, string _contenedor)
+        {
+            StringBuilder gruposAdjuntos = new StringBuilder();
+
+
+            var _connection = new PrincipalContext(ContextType.Domain,
+                dominio,
+                _contenedor,
+                ContextOptions.SimpleBind,
+                this.miNombreUsuario,
+                this.miContrasena);
+            var _userData = UserPrincipal.FindByIdentity(_connection, username);
+
+            DirectoryEntry de = (DirectoryEntry)_userData.GetUnderlyingObject();
+            object obGroups = de.Invoke("Groups");
+            IList<string> listargroups = new List<string>();
+
+            foreach (object ob in (IEnumerable)obGroups)
+            {
+                // Adiciona el grupo al stringbuilder.
+                var obGpEntry = new DirectoryEntry(ob);
+                gruposAdjuntos.Append(obGpEntry.Name.Split('=')[1]);
+                gruposAdjuntos.Append("|");
+            }
+
+            return gruposAdjuntos.ToString();
+        }
+
+        public string GetCompany(string dominio, string username, string pwd)
+        {
+            ResultPropertyValueCollection compania_de_Usuario;
+
+            try
+            {
+                DirectoryEntry de = new DirectoryEntry(dominio, username, pwd);
+                DirectorySearcher searcher = new DirectorySearcher(de);
+                searcher.Filter = "(&(ObjectClass=user)(sAMAccountName=" + username + "))";
+
+                searcher.PropertiesToLoad.Add("Company");
+
+                SearchResultCollection results = searcher.FindAll();
+                compania_de_Usuario = results[0].Properties["Company"];
+
+                return compania_de_Usuario[0].ToString();
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error leyendo compañias de usuario. " + ex.Message);
+
+            }
+        }
+
+        public List<UsuarioLDAP> GetUsersForGAO(string dominio, string adminUser, string adminPwd, string contenedor, string grupo)
+        {
+            byte[] bytes = Convert.FromBase64String(adminPwd);
+            string securepw = System.Text.Encoding.Unicode.GetString(bytes);
+
+            string domainPath = string.Format("LDAP://{0}/{1}", dominio, grupo + "," +contenedor);
+            DirectoryEntry searchRoot = new DirectoryEntry(domainPath, adminUser, securepw);
+            DirectorySearcher search = new DirectorySearcher(searchRoot);
+
+            search.Filter = "(&(&(objectClass=user)(objectClass=person)))";
+            search.PropertiesToLoad.Add("samaccountname");
+            search.PropertiesToLoad.Add("usergroup");
+            search.PropertiesToLoad.Add("displayname");
+            search.PropertiesToLoad.Add("Company");
+            SearchResult result;
+            SearchResultCollection resultCol = search.FindAll();
+            List<UsuarioLDAP> lstADUsers = new List<UsuarioLDAP>();
+            if (resultCol != null)
+            {
+                for (int counter = 0; counter < resultCol.Count; counter++)
+                {
+                    string userNameEmailString = string.Empty;
+                    result = resultCol[counter];
+                    if (result.Properties.Contains("samaccountname") &&
+                        result.Properties.Contains("displayname"))
+                    {
+                        UsuarioLDAP usuario = new UsuarioLDAP();
+                        usuario.NombreCompleto = (String)result.Properties["displayname"][0];
+                        usuario.NombreUsuario = (String)result.Properties["samaccountname"][0];
+                        lstADUsers.Add(usuario);
+                    }
+                }
+            }
+            return lstADUsers.OrderBy(x => x.NombreCompleto).ToList();
+        }
+
+        public ClaimsIdentity CreateIdentity(string gruposAutorizados)
+        {
+            var identity = new ClaimsIdentity(AuthenticationCookie.ApplicationCookie, ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+            identity.AddClaim(new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", "Active Directory"));
+            identity.AddClaim(new Claim(ClaimTypes.Name, this.miUsuario.SamAccountName));
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, this.miUsuario.SamAccountName));
+            if (!String.IsNullOrEmpty(this.miUsuario.EmailAddress))
+            {
+                identity.AddClaim(new Claim(ClaimTypes.Email, this.miUsuario.EmailAddress));
+            }
+
+            var claims = new List<Claim>();
+            var groups = new GroupPrincipal(this.miUsuario.Context);
+            var searcher = new PrincipalSearcher(groups);
+            foreach (Principal item in searcher.FindAll())
+            {
+                var foundGroup = item as GroupPrincipal;
+                if (foundGroup != null && foundGroup.IsSecurityGroup == true)
+                {
+                    foreach (string grupo in gruposAutorizados.Split('|'))
+                    {
+                        if (foundGroup.Name == grupo)
+                        {
+                            claims.Add(new Claim(ClaimTypes.Role, foundGroup.Name));
+                        }
+                    }
+                }
+            }
+            if (claims.Count > 0)
+            {
+                identity.AddClaims(claims);
+            }
+
+            return identity;
+        }
+
+    }
+}

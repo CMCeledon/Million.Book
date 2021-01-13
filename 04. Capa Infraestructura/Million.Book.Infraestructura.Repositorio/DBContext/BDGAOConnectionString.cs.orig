@@ -1,0 +1,899 @@
+using System;
+using System.Data.Entity;
+
+using XM.GAO.Model.Entities;
+
+namespace XM.GAO.Model.DBContext
+{
+    public class BDGAOConnectionString : DbContext
+    {
+        public BDGAOConnectionString()
+            : base("name=BDGAOConnectionString")
+        {
+
+        }
+
+        public virtual DbSet<Activo> Activo { get; set; }
+        public virtual DbSet<ActivoAsociado> ActivoAsociado { get; set; }
+        public virtual DbSet<Agente> Agente { get; set; }
+        public virtual DbSet<Analisis> Analisis { get; set; }
+        public virtual DbSet<AnalisisEvento> AnalisisEvento { get; set; }
+        public virtual DbSet<AnexoAnalisis> AnexoAnalisis { get; set; }
+        public virtual DbSet<AnexoCasoAnalisis> AnexoCasoAnalisis { get; set; }
+        public virtual DbSet<AnexoRequerimiento> AnexoRequerimiento { get; set; }
+        public virtual DbSet<AnexoSolicitud> AnexoSolicitud { get; set; }
+        public virtual DbSet<Comentario> Comentario { get; set; }
+        public virtual DbSet<CasoAnalisis> CasoAnalisis { get; set; }
+        public virtual DbSet<CasoAnalisisEvento> CasoAnalisisEvento { get; set; }
+        public virtual DbSet<CausaAnalisis> CausaAnalisis { get; set; }
+        public virtual DbSet<Evento> Evento { get; set; }
+        public virtual DbSet<Incumplimiento> Incumplimiento { get; set; }
+        public virtual DbSet<InformeCasoAnalisis> InformeCasoAnalisis { get; set; }
+        public virtual DbSet<LeccionAprendida> LeccionAprendida { get; set; }
+        public virtual DbSet<LeccionVinculada> LeccionVinculada { get; set; }
+        public virtual DbSet<ListaGlobal> ListaGlobal { get; set; }
+        public virtual DbSet<Operacion> Operacion { get; set; }
+        public virtual DbSet<Protocolo> Protocolo { get; set; }
+        public virtual DbSet<Requerimiento> Requerimiento { get; set; }
+        public virtual DbSet<Responsable> Responsable { get; set; }
+        public virtual DbSet<Solicitud> Solicitud { get; set; }
+        public virtual DbSet<SubAreaAnalisis> SubAreaAnalisis { get; set; }
+        public virtual DbSet<Tarea> Tarea { get; set; }
+        public virtual DbSet<TipoIncumplimiento> TipoIncumplimiento { get; set; }
+        public virtual DbSet<RegistroSupervision> RegistroSupervision { get; set; }
+        public virtual DbSet<ConfigReporte> ConfigReporte { get; set; }
+        public virtual DbSet<AgenteRequerimiento> AgenteRequerimiento { get; set; }
+        public virtual DbSet<Bitacora> Bitacora { get; set; }
+        public virtual DbSet<AgentePI> AgentePI { get; set; }
+        public virtual DbSet<ActivoPI> ActivoPI { get; set; }
+        public virtual DbSet<Impacto> Impacto { get; set; }
+        public virtual DbSet<ActivoDesempeno> ActivoDesempeno { get; set; }
+        public virtual DbSet<InformacionTecnica> InformacionTecnica { get; set; }
+        public virtual DbSet<TareaRequerimiento> TareaRequerimiento { get; set; }
+        public virtual DbSet<ImpactoActivo> ImpactoActivo { get; set; }
+        public virtual DbSet<Situacion> Situacion { get; set; }
+        public virtual DbSet<Proteccion> Proteccion { get; set; }
+        public virtual DbSet<DetalleEventoFrecuencia> DetalleEventoFrecuencia { get; set; }
+        public virtual DbSet<EventoFrecuencia> EventoFrecuencia { get; set; }
+        public virtual DbSet<Correo> Correo { get; set; }
+        public virtual DbSet<DetalleUnidad> DetalleUnidad { get; set; }
+        public virtual DbSet<Unidad> Unidad { get; set; }
+        public virtual DbSet<AnexoRPF> AnexoRPF { get; set; }
+        public virtual DbSet<Revision> Revision { get; set; }
+        public virtual DbSet<RequerimientoProteccion> RequerimientoProteccion { get; set; }
+<<<<<<< HEAD
+        public virtual DbSet<Componente> Componente { get; set; }
+=======
+        public virtual DbSet<EtapaProteccion> EtapaProteccion { get; set; }
+>>>>>>> 4dc209353df0db6cacb053f4610d0e86d736f9b6
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Activo>()
+                .Property(e => e.ActivoID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Activo>()
+                .HasMany(e => e.ActivoAsociado)
+                .WithRequired(e => e.Activo)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Activo>()
+                .HasMany(e => e.Requerimiento)
+                .WithMany(e => e.Activo)
+                .Map(m => m.ToTable("ActivoRequerimiento", "gao").MapLeftKey("activoID").MapRightKey("requerimientoID"));
+
+            modelBuilder.Entity<Activo>()
+                .HasMany(e => e.AnalisisEvento)
+                .WithMany(e => e.Activo)
+                .Map(m => m.ToTable("EventoActivo", "gao").MapLeftKey("activoID").MapRightKey(new[] { "analisisID", "eventoID" }));
+
+            modelBuilder.Entity<ActivoAsociado>()
+                .Property(e => e.ActivoID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<ActivoAsociado>()
+                .Property(e => e.AgenteID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<ActivoAsociado>()
+                .Property(e => e.EventoID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<ActivoAsociado>()
+                .Property(e => e.OcurrenciaActivoID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<ActivoAsociado>()
+                .HasMany(e => e.Incumplimiento)
+                .WithRequired(e => e.ActivoAsociado)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ActivoAsociado>()
+                .HasMany(e => e.Tarea)
+                .WithRequired(e => e.ActivoAsociado)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<AgenteRequerimiento>()
+                .Property(e => e.AgenteID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<AgenteRequerimiento>()
+                .HasMany(e => e.TareaRequerimiento)
+                .WithRequired(e => e.AgenteRequerimiento)
+                .HasForeignKey(e => new { e.requerimientoID, e.agenteID })
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<TareaRequerimiento>()
+                .Property(e => e.agenteID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<TareaRequerimiento>()
+                .Property(e => e.observaciones)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Agente>()
+                 .Property(e => e.AgenteID)
+                 .IsUnicode(false);
+
+            modelBuilder.Entity<Agente>()
+                .HasMany(e => e.ActivoAsociado)
+                .WithRequired(e => e.Agente)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Agente>()
+                .HasMany(e => e.AgenteRequerimiento)
+                .WithRequired(e => e.Agente)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Analisis>()
+                .Property(e => e.Consecutivo)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Analisis>()
+                .Property(e => e.Descripcion)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Analisis>()
+                .Property(e => e.Resumen)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Analisis>()
+                .Property(e => e.Conclusiones)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Analisis>()
+                .HasMany(e => e.AnalisisEvento)
+                .WithRequired(e => e.Analisis)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Analisis>()
+                .HasMany(e => e.AnexoAnalisis)
+                .WithRequired(e => e.Analisis)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<AnalisisEvento>()
+                .Property(e => e.EventoID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<AnexoAnalisis>()
+                .Property(e => e.NombreArchivo)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<AnexoAnalisis>()
+                .Property(e => e.RutaAlmacenamiento)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<AnexoAnalisis>()
+                .Property(e => e.RutaBorrado)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<AnexoCasoAnalisis>()
+                .Property(e => e.RutaAlmacenamiento)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<AnexoCasoAnalisis>()
+                .Property(e => e.NombreArchivo)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<AnexoCasoAnalisis>()
+                .Property(e => e.RutaBorrado)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<AnexoRequerimiento>()
+                .Property(e => e.rutaAlmacenamiento)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<AnexoRequerimiento>()
+                .Property(e => e.nombreArchivo)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<AnexoRequerimiento>()
+                .Property(e => e.rutaBorrado)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<AnexoSolicitud>()
+                .Property(e => e.nombreArchivo)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<AnexoSolicitud>()
+                .Property(e => e.rutaAlmacenamiento)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<AnexoSolicitud>()
+                .Property(e => e.rutaBorrado)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<CasoAnalisis>()
+                .Property(e => e.Descripcion)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<CasoAnalisis>()
+                .Property(e => e.Impacto)
+                .HasPrecision(18, 0);
+
+            modelBuilder.Entity<CasoAnalisis>()
+                .HasMany(e => e.AnexoCasoAnalisis)
+                .WithRequired(e => e.CasoAnalisis)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CasoAnalisis>()
+                .HasMany(e => e.CasoAnalisisEvento)
+                .WithRequired(e => e.CasoAnalisis)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CasoAnalisis>()
+                .HasMany(e => e.InformeCasoAnalisis)
+                .WithRequired(e => e.CasoAnalisis)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CasoAnalisis>()
+                .HasMany(e => e.Impacto1)
+                .WithRequired(e => e.CasoAnalisis)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CasoAnalisis>()
+                .HasMany(e => e.Requerimiento)
+                .WithMany(e => e.CasoAnalisis)
+                .Map(m => m.ToTable("CasoAnalisisRequerimiento", "gao").MapLeftKey("casoAnalisisID").MapRightKey("requerimientoID"));
+
+            modelBuilder.Entity<CasoAnalisis>()
+                .HasMany(e => e.Operacion)
+                .WithMany(e => e.CasoAnalisis)
+                .Map(m => m.ToTable("OperacionCasoAnalisis", "gao").MapLeftKey("casoAnalisisID").MapRightKey("operacionID"));
+
+            modelBuilder.Entity<CasoAnalisis>()
+                .HasMany(e => e.InformacionTecnica)
+                .WithRequired(e => e.CasoAnalisis)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CasoAnalisisEvento>()
+                .Property(e => e.EventoId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<CasoAnalisisEvento>()
+                .HasMany(e => e.ActivoAsociado)
+                .WithRequired(e => e.CasoAnalisisEvento)
+                .HasForeignKey(e => new { e.CasoAnalisisID, e.EventoID })
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CasoAnalisisEvento>()
+                .HasMany(e => e.LeccionAprendida)
+                .WithRequired(e => e.CasoAnalisisEvento)
+                .HasForeignKey(e => new { e.CasoAnalisisId, e.EventoId })
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CausaAnalisis>()
+                .Property(e => e.Descripcion)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Evento>()
+                .Property(e => e.EventoID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Evento>()
+                .HasMany(e => e.ActivoAsociado)
+                .WithRequired(e => e.Evento)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Evento>()
+                .HasMany(e => e.AnalisisEvento)
+                .WithRequired(e => e.Evento)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Evento>()
+                .HasMany(e => e.CasoAnalisisEvento)
+                .WithRequired(e => e.Evento)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Evento>()
+                .HasMany(e => e.InformacionTecnica)
+                .WithRequired(e => e.Evento)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Evento>()
+                .HasMany(e => e.Requerimiento)
+                .WithMany(e => e.Evento)
+                .Map(m => m.ToTable("EventoRequerimiento", "gao").MapLeftKey("eventoID").MapRightKey("requerimientoID"));
+
+            modelBuilder.Entity<Requerimiento>()
+            .HasMany(e => e.EquipoCND)
+            .WithMany(e => e.Requerimiento2)
+            .Map(m => m.ToTable("RequerimientoEquipoCND", "gao").MapLeftKey("requerimientoID").MapRightKey("equipoCNDID"));
+
+
+            modelBuilder.Entity<Requerimiento>()
+                .Property(e => e.descripcion)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Requerimiento>()
+                .Property(e => e.responsableID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Requerimiento>()
+                .Property(e => e.motivoAnulacion)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Requerimiento>()
+                .Property(e => e.respuesta)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Requerimiento>()
+                .HasMany(e => e.AgenteRequerimiento)
+                .WithRequired(e => e.Requerimiento)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Requerimiento>()
+                .HasMany(e => e.AnexoRequerimiento)
+                .WithRequired(e => e.Requerimiento)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<InformeCasoAnalisis>()
+                .Property(e => e.rutaAlmacenamiento)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<InformeCasoAnalisis>()
+                .Property(e => e.nombreArchivo)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<InformeCasoAnalisis>()
+                .Property(e => e.rutaFisicaInforme)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<LeccionAprendida>()
+                .Property(e => e.EventoId)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<LeccionAprendida>()
+                .Property(e => e.PalabraClave)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<LeccionAprendida>()
+                .Property(e => e.Leccion)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<LeccionAprendida>()
+                .HasMany(e => e.LeccionVinculada)
+                .WithRequired(e => e.LeccionAprendida)
+                .HasForeignKey(e => e.LeccionVinculadaId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .Property(e => e.valorLista)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .Property(e => e.contexto)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.Analisis)
+                .WithRequired(e => e.TipoAnalisis)
+                .HasForeignKey(e => e.TipoAnalisisID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.Analisis1)
+                .WithRequired(e => e.Estado)
+                .HasForeignKey(e => e.ListaEstadoID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.Comentario)
+                .WithRequired(e => e.Estado)
+                .HasForeignKey(e => e.estadoID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.AnexoAnalisis)
+                .WithRequired(e => e.TipoAnexo)
+                .HasForeignKey(e => e.TipoAnexoID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.AnexoCasoAnalisis)
+                .WithRequired(e => e.TipoAnexo)
+                .HasForeignKey(e => e.TipoAnexoID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.AnexoRequerimiento)
+                .WithRequired(e => e.TipoAnexo)
+                .HasForeignKey(e => e.tipoAnexoID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.CasoAnalisis)
+                .WithRequired(e => e.Estado)
+                .HasForeignKey(e => e.EstadoID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.CasoAnalisis1)
+                .WithOptional(e => e.Clasificacion)
+                .HasForeignKey(e => e.ClasificacionID);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.CausaAnalisis)
+                .WithRequired(e => e.TipoCausa)
+                .HasForeignKey(e => e.TipoCausaID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.Incumplimiento)
+                .WithRequired(e => e.TipoIncumplimiento)
+                .HasForeignKey(e => e.tipoIncumplimientoID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.InformeCasoAnalisis)
+                .WithRequired(e => e.Estado)
+                .HasForeignKey(e => e.estadoInforme)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.LeccionAprendida)
+                .WithRequired(e => e.Categoria)
+                .HasForeignKey(e => e.CategoriaId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.Operacion)
+                .WithOptional(e => e.Clasificacion)
+                .HasForeignKey(e => e.clasificacionID);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.Operacion1)
+                .WithOptional(e => e.Criticidad)
+                .HasForeignKey(e => e.criticidadID);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.Operacion2)
+                .WithRequired(e => e.Estado)
+                .HasForeignKey(e => e.estadoID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.Operacion3)
+                .WithOptional(e => e.TipoOperacion)
+                .HasForeignKey(e => e.tipoOperacionID);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.Operacion4)
+                .WithOptional(e => e.ContextoOperacion)
+                .HasForeignKey(e => e.contextoOperacionID);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.Protocolo)
+                .WithOptional(e => e.CalidadLlamada)
+                .HasForeignKey(e => e.CalidadLlamadaID);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.Protocolo1)
+                .WithRequired(e => e.Estado)
+                .HasForeignKey(e => e.EstadoID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.Requerimiento)
+                .WithRequired(e => e.Clasificacion)
+                .HasForeignKey(e => e.clasificacionID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.Requerimiento1)
+                .WithRequired(e => e.Estado)
+                .HasForeignKey(e => e.estadoID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.Responsable)
+                .WithRequired(e => e.GrupoResponsable)
+                .HasForeignKey(e => e.grupoResponsableID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.Solicitud)
+                .WithRequired(e => e.Estado)
+                .HasForeignKey(e => e.estadoID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.Solicitud1)
+                .WithRequired(e => e.TipoSolicitud)
+                .HasForeignKey(e => e.tipoSolicitudID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.Tarea)
+                .WithRequired(e => e.TipoTarea)
+                .HasForeignKey(e => e.tipoTareaID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.TareaRequerimiento)
+                .WithRequired(e => e.tipoTareaRequerimiento)
+                .HasForeignKey(e => e.tipoTareaID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.TipoIncumplimiento)
+                .WithRequired(e => e.Categoria)
+                .HasForeignKey(e => e.categoriaID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.InformacionTecnica)
+                .WithRequired(e => e.ListaGlobal)
+                .HasForeignKey(e => e.tipoAdjuntoID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.Situacion)
+                .WithRequired(e => e.TipoSituacion)
+                .HasForeignKey(e => e.tipoSituacionID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.ImpactoActivo)
+                .WithRequired(e => e.Acuerdo)
+                .HasForeignKey(e => e.detalleCausaID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.ActivoDesempeno)
+                .WithRequired(e => e.Causa)
+                .HasForeignKey(e => e.detalleCausaID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.Proteccion)
+                .WithRequired(e => e.ListaGlobal)
+                .HasForeignKey(e => e.funcion)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.Correo)
+                .WithRequired(e => e.TipoCorreo)
+                .HasForeignKey(e => e.tipoCorreoID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.DetalleUnidad)
+                .WithRequired(e => e.RegistroPlanta)
+                .HasForeignKey(e => e.registroPlantaID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.RequerimientoProteccion)
+                .WithRequired(e => e.Clasificacion)
+                .HasForeignKey(e => e.clasificacionID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.RequerimientoProteccion1)
+                .WithRequired(e => e.Estado)
+                .HasForeignKey(e => e.estadoID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Operacion>()
+                .Property(e => e.responsable)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Operacion>()
+                .Property(e => e.tipoResponsable)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Operacion>()
+                .Property(e => e.descripcion)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Operacion>()
+                .HasMany(e => e.Analisis)
+                .WithMany(e => e.Operacion)
+                .Map(m => m.ToTable("OperacionAnalisis", "gao").MapLeftKey("operacionID").MapRightKey("analisisID"));
+
+            modelBuilder.Entity<Operacion>()
+                .HasMany(e => e.Solicitud)
+                .WithMany(e => e.Operacion)
+                .Map(m => m.ToTable("SolicitudOperacion", "gao").MapLeftKey("operacionID").MapRightKey("solicitudID"));
+
+            modelBuilder.Entity<Protocolo>()
+                .Property(e => e.CompaniaID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Protocolo>()
+                .Property(e => e.Observaciones)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Protocolo>()
+                .HasMany(e => e.TipoIncumplimiento)
+                .WithMany(e => e.Protocolo)
+                .Map(m => m.ToTable("TipoIncumplimientoProtocolo", "gao").MapLeftKey("protocoloID").MapRightKey("tipoIncumplimientoID"));
+
+            modelBuilder.Entity<Requerimiento>()
+                .Property(e => e.descripcion)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Requerimiento>()
+                .Property(e => e.motivoAnulacion)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Requerimiento>()
+                .Property(e => e.respuesta)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Requerimiento>()
+                .HasMany(e => e.AnexoRequerimiento)
+                .WithRequired(e => e.Requerimiento)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Responsable>()
+                .Property(e => e.responsable)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Responsable>()
+                .HasMany(e => e.Analisis)
+                .WithRequired(e => e.Responsable)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Responsable>()
+                .HasMany(e => e.CasoAnalisis)
+                .WithOptional(e => e.Responsable)
+                .HasForeignKey(e => e.IdResponsable);
+
+            modelBuilder.Entity<Responsable>()
+                .HasMany(e => e.Protocolo)
+                .WithRequired(e => e.Responsable)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Solicitud>()
+                .Property(e => e.descripcion)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Solicitud>()
+                .HasMany(e => e.AnexoSolicitud)
+                .WithRequired(e => e.Solicitud)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<SubAreaAnalisis>()
+                .Property(e => e.subareaAnalisisID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Tarea>()
+                .Property(e => e.observaciones)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<TipoIncumplimiento>()
+                .Property(e => e.descripcion)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<RegistroSupervision>()
+                .Property(e => e.b1)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<AgentePI>()
+                .Property(e => e.id);
+
+            modelBuilder.Entity<AgentePI>()
+                .Property(e => e.nombreAgente)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<ActivoPI>()
+                .Property(e => e.id);
+
+            modelBuilder.Entity<ActivoPI>()
+                .Property(e => e.agenteID);
+
+            modelBuilder.Entity<ActivoPI>()
+                .Property(e => e.b3)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<ActivoPI>()
+                .Property(e => e.nombreActivo)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<ActivoPI>()
+                .Property(e => e.sistema)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<ActivoPI>()
+                .Property(e => e.remunerado);
+
+            modelBuilder.Entity<ActivoPI>()
+                .Property(e => e.excepcionado);
+
+            modelBuilder.Entity<ActivoPI>()
+                .Property(e => e.webid)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<AgentePI>()
+                .HasMany(e => e.ActivoPI)
+                .WithRequired(e => e.AgentePI)
+                .HasForeignKey(e => e.agenteID)
+                .WillCascadeOnDelete(false);
+
+
+            modelBuilder.Entity<Impacto>()
+                .Property(e => e.subAreaDNAPorcentaje)
+                .HasPrecision(5, 2);
+
+            modelBuilder.Entity<Impacto>()
+                .Property(e => e.areaDNAPorcentaje)
+                .HasPrecision(5, 2);
+
+            modelBuilder.Entity<Impacto>()
+                .Property(e => e.valorFrecuencia)
+                .HasPrecision(5, 3);
+
+            modelBuilder.Entity<InformacionTecnica>()
+                .Property(e => e.eventoID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<InformacionTecnica>()
+                .Property(e => e.agenteID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<InformacionTecnica>()
+                .Property(e => e.rutaAlmacenamiento)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<InformacionTecnica>()
+                .Property(e => e.nombreArchivo)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<InformacionTecnica>()
+                .Property(e => e.rutaFisicaInforme)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Agente>()
+                .HasMany(e => e.InformacionTecnica)
+                .WithRequired(e => e.Agente)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Evento>()
+                .HasMany(e => e.Impacto)
+                .WithMany(e => e.Evento)
+                .Map(m => m.ToTable("ImpactoEvento", "gao").MapLeftKey("eventoID").MapRightKey("ImpactoID"));
+
+            modelBuilder.Entity<Impacto>()
+                .HasMany(e => e.Situacion)
+                .WithRequired(e => e.Impacto)
+                .HasForeignKey(e => e.impactoID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Situacion>()
+                .HasMany(e => e.ActivoDesempeno)
+                .WithRequired(e => e.Situacion)
+                .HasForeignKey(e => e.situacionID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ListaGlobal>()
+                .HasMany(e => e.Impacto)
+                .WithMany(e => e.ListaGlobal)
+                .Map(m => m.ToTable("ImpactoListaGlobal", "gao").MapLeftKey("listaGlobalID").MapRightKey("ImpactoID"));
+
+            modelBuilder.Entity<Activo>()
+                .HasMany(e => e.ActivoDesempeno)
+                .WithMany(e => e.Activo)
+                .Map(m => m.ToTable("ActivoDesempenoActivo", "gao").MapLeftKey("activoID").MapRightKey("activoDesempenoID"));
+
+            modelBuilder.Entity<DetalleEventoFrecuencia>()
+                .Property(e => e.eventoFrecuenciaID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<EventoFrecuencia>()
+                .Property(e => e.eventoFrecuenciaID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<EventoFrecuencia>()
+                .Property(e => e.descripcion)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<EventoFrecuencia>()
+                .HasMany(e => e.Unidad)
+                .WithRequired(e => e.EventoFrecuencia)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Correo>()
+                .Property(e => e.asunto)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Correo>()
+                .Property(e => e.destinatario)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Correo>()
+                .Property(e => e.cuerpoMensaje)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Correo>()
+                .HasMany(e => e.DetalleEventoFrecuencia)
+                .WithMany(e => e.Correo)
+                .Map(m => m.ToTable("DetalleCorreo", "gao").MapLeftKey("correoID").MapRightKey("detalleEventoCorreoID"));
+
+            modelBuilder.Entity<DetalleUnidad>()
+                .Property(e => e.registroPlantaID);
+                
+
+            modelBuilder.Entity<DetalleUnidad>()
+                .Property(e => e.observacion)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<DetalleUnidad>()
+                .HasMany(e => e.AnexoRPF)
+                .WithRequired(e => e.DetalleUnidad)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Unidad>()
+                .Property(e => e.codigoUnidadID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Unidad>()
+                .Property(e => e.eventoFrecuenciaID)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Unidad>()
+                .Property(e => e.planta)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Unidad>()
+                .Property(e => e.nombreUnidad)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Unidad>()
+                .Property(e => e.agente)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Unidad>()
+                .Property(e => e.AGC)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Unidad>()
+                .Property(e => e.pruebas)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<EventoFrecuencia>()
+                .HasMany(e => e.DetalleEventoFrecuencia)
+                .WithRequired(e => e.EventoFrecuencia)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<RequerimientoProteccion>()
+                .Property(e => e.consecutivo)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<RequerimientoProteccion>()
+                .Property(e => e.responsable)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<RequerimientoProteccion>()
+                .Property(e => e.descripcion)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<RequerimientoProteccion>()
+                .Property(e => e.motivoAnulacion)
+                .IsUnicode(false);
+
+        }
+    }
+}

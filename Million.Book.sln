@@ -1,0 +1,84 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29123.88
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01. Capa Presentación", "01. Capa Presentación", "{3F3B7F0E-7FE9-46D3-BDA4-855C16410AD4}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02. Capa Aplicación", "02. Capa Aplicación", "{F2079AC7-491C-4995-9A57-080453761E9B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03. Capa Dominio", "03. Capa Dominio", "{C0A8796D-09D8-41D7-8E54-3D97E6658BA3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04. Capa Infraestructura", "04. Capa Infraestructura", "{C32FDF00-CAC0-49D7-860E-04B1C7143C57}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05. Capa Común", "05. Capa Común", "{8B1D9061-A371-40A0-91C1-F1D6D49A3280}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "06. Capa Prueba Unitarias", "06. Capa Prueba Unitarias", "{7F865DE2-40DE-499D-8167-F4C0C6DDD125}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Million.Book.Comun", "05. Capa Común\Million.Book.Comun\Million.Book.Comun.csproj", "{0A9B7A92-242A-4F9B-9C1C-EF47158E32FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Million.Book.Aplicacion", "02. Capa Aplicación\Million.Book.Aplicacion\Million.Book.Aplicacion.csproj", "{A35E2E45-A911-4C91-8F67-AFEBE7867A73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Million.Book.Modelo", "03. Capa Dominio\Million.Book.Modelo\Million.Book.Modelo.csproj", "{84AC9626-6E0F-42BF-9D9D-9C11C5BFF22B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Million.Book.Infraestructura.Interfaces", "04. Capa Infraestructura\Million.Book.Infraestructura.Interfaces\Million.Book.Infraestructura.Interfaces.csproj", "{36AA316C-F9AE-467E-ACFB-7457F4A9B24D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Million.Book.Infraestructura.Repositorio", "04. Capa Infraestructura\Million.Book.Infraestructura.Repositorio\Million.Book.Infraestructura.Repositorio.csproj", "{EBB159F8-419D-496C-9F3C-4A5BAF64440E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Million.Book.UI", "01. Capa Presentación\Million.Book.UI\Million.Book.UI\Million.Book.UI.csproj", "{CA6FAE73-AAE7-4A50-8D34-E873C81AC275}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "07. Sql", "07. Sql", "{2E6E09B7-F3E2-4989-B5AF-972B10254275}"
+	ProjectSection(SolutionItems) = preProject
+		07. Sql\[DB_A50F5D_million].sql = 07. Sql\[DB_A50F5D_million].sql
+		07. Sql\DB_A50F5D_million_11_16_2020.bak = 07. Sql\DB_A50F5D_million_11_16_2020.bak
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0A9B7A92-242A-4F9B-9C1C-EF47158E32FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A9B7A92-242A-4F9B-9C1C-EF47158E32FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A9B7A92-242A-4F9B-9C1C-EF47158E32FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A9B7A92-242A-4F9B-9C1C-EF47158E32FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A35E2E45-A911-4C91-8F67-AFEBE7867A73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A35E2E45-A911-4C91-8F67-AFEBE7867A73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A35E2E45-A911-4C91-8F67-AFEBE7867A73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A35E2E45-A911-4C91-8F67-AFEBE7867A73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84AC9626-6E0F-42BF-9D9D-9C11C5BFF22B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84AC9626-6E0F-42BF-9D9D-9C11C5BFF22B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84AC9626-6E0F-42BF-9D9D-9C11C5BFF22B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84AC9626-6E0F-42BF-9D9D-9C11C5BFF22B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36AA316C-F9AE-467E-ACFB-7457F4A9B24D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36AA316C-F9AE-467E-ACFB-7457F4A9B24D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36AA316C-F9AE-467E-ACFB-7457F4A9B24D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36AA316C-F9AE-467E-ACFB-7457F4A9B24D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBB159F8-419D-496C-9F3C-4A5BAF64440E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBB159F8-419D-496C-9F3C-4A5BAF64440E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBB159F8-419D-496C-9F3C-4A5BAF64440E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBB159F8-419D-496C-9F3C-4A5BAF64440E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA6FAE73-AAE7-4A50-8D34-E873C81AC275}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA6FAE73-AAE7-4A50-8D34-E873C81AC275}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA6FAE73-AAE7-4A50-8D34-E873C81AC275}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA6FAE73-AAE7-4A50-8D34-E873C81AC275}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0A9B7A92-242A-4F9B-9C1C-EF47158E32FD} = {8B1D9061-A371-40A0-91C1-F1D6D49A3280}
+		{A35E2E45-A911-4C91-8F67-AFEBE7867A73} = {F2079AC7-491C-4995-9A57-080453761E9B}
+		{84AC9626-6E0F-42BF-9D9D-9C11C5BFF22B} = {C0A8796D-09D8-41D7-8E54-3D97E6658BA3}
+		{36AA316C-F9AE-467E-ACFB-7457F4A9B24D} = {C32FDF00-CAC0-49D7-860E-04B1C7143C57}
+		{EBB159F8-419D-496C-9F3C-4A5BAF64440E} = {C32FDF00-CAC0-49D7-860E-04B1C7143C57}
+		{CA6FAE73-AAE7-4A50-8D34-E873C81AC275} = {3F3B7F0E-7FE9-46D3-BDA4-855C16410AD4}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EBBE25BF-113B-4CC0-8F00-8866AEBD0CA4}
+	EndGlobalSection
+EndGlobal

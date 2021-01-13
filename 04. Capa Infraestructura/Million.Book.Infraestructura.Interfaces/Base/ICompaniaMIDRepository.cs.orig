@@ -1,0 +1,52 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using XM.GAO.Model;
+using XM.GAO.Model.DBContext;
+using XM.GAO.Model.Entities;
+
+namespace XM.GAO.Interfaces.Common
+{
+    public interface ICompaniaMIDRepository
+    {
+        List<CompaniaDTO> ListarCompanias();
+
+        List<MIDAreaTopologica_DTO> ListarSubAreas();
+
+        List<MIDAreaTopologica_DTO> ListarSubAreasById(string id);
+
+        string NombreSubAreaById(string id);
+
+        string CodigoSubAreaById(string id);
+
+        List<MIDvSncPermisoCsgTodosDTO> ListarManiobrasMIDById(string id);
+
+        List<MIDSncPermisoCsgTodosyAdicionalesSNCDTO> ListarManiobrasSNCByIdSinLAMBDA(string consigId);
+
+        List<MIDSncPermisoCsgTodosyAdicionalesSNCDTO> ListarManiobrasSNCByFechaSinLAMBDA(DateTime fechaI, DateTime fechaF);
+
+        List<MIDvSncPermisoCsgTodosDTO> ListarManiobrasMIDByFecha(DateTime fechaI, DateTime fechaF);
+
+        List<MIDConsultaSPEMDTO> ListarManiobrasSPEM(string consigId);
+
+        List<MIDConsultaManiobSNCAdicionalDTO> ListarManiobrasAdicionalSNC(string consigId);
+
+        List<MIDConsultaManiobHEROPEDTO> ListarManiobrasHEROPE(string consigId);
+
+        string GetCompaniaName(string id);
+
+        List<MIDConsultaAgentes> ListarConsultaAgentes();
+<<<<<<< HEAD
+        List<string> ListarCompaniasporNombreUsuario(string nombreUsuario);
+        List<string> ListarCompaniasNomCortoporNombreUsuario(string nombreUsuario);
+=======
+
+        List<string> ListarCompaniasporNombreUsuario(string nombreUsuario);
+        List<string> ListarCompaniasNomCortoporNombreUsuario(string nombreUsuario);
+        List<string> ListarCompaniasNomLargoporNombreUsuario(string nombreUsuario);
+
+>>>>>>> Dev_InformeSupervision_v14
+    }
+}
